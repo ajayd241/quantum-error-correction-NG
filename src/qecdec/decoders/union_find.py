@@ -229,7 +229,9 @@ class UnionFindDecoder(Decoder):
                     edge_rates[edge] = edge_rates.get(edge, 0) + 1
 
             if not edge_rates:
-                raise ValueError("syndrome has an odd cluster disconnected from boundary")
+                raise ValueError(
+                    "syndrome has an odd cluster disconnected from boundary"
+                )
 
             rounds_to_event = min(
                 (

@@ -7,39 +7,39 @@ Turn working code into something judges can clone, run and believe: a full sweep
 
 ## Checklist
 ### Final sweep
-- [ ] One command: `python scripts/run_sweep.py --config configs/final.yaml` (or CLI flags), writing `results/final.csv`
-- [ ] Decoders: pymatching, uf_unweighted, uf, bp, belief_find (+ mwpm_nx for d ≤ 5)
-- [ ] d ∈ {3,5,7}, 8 p-values, enough shots for ≥ 100 failures where feasible
-- [ ] Shot-level parallelism with `multiprocessing.Pool` over (decoder, d, p) jobs; record wall time with 1 worker vs N
+- [x] One command: `python scripts/run_sweep.py --config configs/final.yaml` (or CLI flags), writing `results/final.csv`
+- [x] Decoders: pymatching, uf_unweighted, uf, bp, belief_find (optional P4 mwpm_nx was cut)
+- [x] d ∈ {3,5,7}, 8 p-values, enough shots for ≥ 100 failures where feasible (low-failure points disclosed)
+- [x] Shot-level parallelism with `multiprocessing.Pool` over (decoder, d, p) jobs; record wall time with 1 worker vs N
 
 ### Plots (`scripts/plot_results.py` → `results/figs/`)
-- [ ] `ler_vs_p_<decoder>.png`: per decoder, one curve per d (shows the threshold)
-- [ ] `ler_vs_p_d5_all.png`: all decoders at d=5 on one plot (the comparison)
-- [ ] `threshold_estimates.png` or a table: crossing of d=5 and d=7 curves (linear interpolation in log-log space)
-- [ ] `latency.png`: per-shot p50/p99 bars per decoder at d=5, p≈0.005
-- [ ] `budget_study_*.png` from P3
-- [ ] `parallel_speedup.png`: wall time vs workers
-- [ ] Consistent colours per decoder across every figure (define them once in `plot_results.py`)
+- [x] `ler_vs_p_<decoder>.png`: per decoder, one curve per d (shows the threshold)
+- [x] `ler_vs_p_d5_all.png`: all decoders at d=5 on one plot (the comparison)
+- [x] `threshold_estimates.png` or a table: crossing of d=5 and d=7 curves (linear interpolation in log-log space)
+- [x] `latency.png`: per-shot p50/p99 bars per decoder at d=5, p≈0.005
+- [x] `budget_study_*.png` from P3
+- [x] `parallel_speedup.png`: wall time vs workers
+- [x] Consistent colours per decoder across every figure (define them once in `plot_results.py`)
 
 ### Tests and quality
-- [ ] `pytest -q` green, including the slow tests, on a fresh clone in a fresh venv
-- [ ] `ruff` (or `flake8`) clean; type hints on public functions
-- [ ] Every module has a docstring explaining the physics in 2–4 lines
-- [ ] Optional: GitHub Actions workflow running `pytest -m "not slow"`
+- [x] `pytest -q` green, including the slow tests, on a fresh clone in a fresh venv
+- [x] `ruff` (or `flake8`) clean; type hints on public functions
+- [x] Every module has a docstring explaining the physics in 2–4 lines
+- [x] Optional: GitHub Actions workflow running `pytest -m "not slow"`
 
 ### README.md
-- [ ] One-paragraph pitch (from HACKATHON.md)
-- [ ] Quick start: install, run the tests, run the sweep, make the plots (copy-pasteable)
-- [ ] Decoder table: name, idea in one line, complexity, parallelism, file path
-- [ ] Results table: threshold estimate, LER at d=5 p=0.005, p50/p99 latency per decoder
-- [ ] Embedded key figures
-- [ ] "What's novel" section with honest credit (Higgott et al.; Caune et al.)
-- [ ] Limitations and future work
-- [ ] References; MIT license
+- [x] One-paragraph pitch (from HACKATHON.md)
+- [x] Quick start: install, run the tests, run the sweep, make the plots (copy-pasteable)
+- [x] Decoder table: name, idea in one line, complexity, parallelism, file path
+- [x] Results table: threshold estimate, LER at d=5 p=0.005, p50/p99 latency per decoder
+- [x] Embedded key figures
+- [x] "What's novel" section with honest credit (Higgott et al.; Caune et al.)
+- [x] Limitations and future work
+- [x] References; MIT license
 
 ### Publish
-- [ ] `.gitignore` (venv, __pycache__, large raw CSVs if any)
-- [ ] Commit `results/final.csv` and the figures, so judges can see results without running anything
+- [x] `.gitignore` (venv, __pycache__, large raw CSVs if any)
+- [x] Commit `results/final.csv` and the figures, so judges can see results without running anything
 - [ ] Create the public GitHub repo and push; check that the README renders and the images load
 - [ ] Tag `v1.0-hackathon`
 

@@ -65,6 +65,30 @@ def test_sweep_writes_csv_with_recorded_seed(tmp_path) -> None:
     assert from_disk.loc[0, "decoder"] == "pymatching"
 
 
+def test_parallel_sweep_preserves_accuracy_and_seed(tmp_path) -> None:
+    sequential = sweep(
+        decoders=["pymatching"],
+        distances=[3],
+        ps=[0.004, 0.006],
+        shots={"pymatching": 50},
+        seed=11,
+        out_csv=tmp_path / "sequential.csv",
+    )
+    parallel = sweep(
+        decoders=["pymatching"],
+        distances=[3],
+        ps=[0.004, 0.006],
+        shots={"pymatching": 50},
+        seed=11,
+        out_csv=tmp_path / "parallel.csv",
+        workers=2,
+    )
+
+    columns = ["decoder", "d", "p", "shots", "failures", "seed"]
+    pd.testing.assert_frame_equal(sequential[columns], parallel[columns])
+    assert set(parallel["sweep_workers"]) == {2}
+
+
 def test_point_seed_depends_on_probability_not_grid_position() -> None:
     low_first = {
         probability: _point_seed(7, 5, probability)

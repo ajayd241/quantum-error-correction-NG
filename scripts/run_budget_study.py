@@ -4,8 +4,8 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 import time
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -15,7 +15,6 @@ from qecdec.decoders.belief_find import BeliefFindDecoder
 from qecdec.decoders.pymatching_ref import PyMatchingDecoder
 from qecdec.decoders.union_find import UnionFindDecoder
 from qecdec.harness import sample
-
 
 DEFAULT_BUDGETS = [0, 1, 2, 4, 8, 16, 32]
 DEFAULT_DISTANCES = [3, 5, 7]
@@ -231,7 +230,11 @@ def main() -> None:
         type=_comma_separated_floats,
         default=DEFAULT_PROBABILITIES,
     )
-    parser.add_argument("--budgets", type=_comma_separated_ints, default=DEFAULT_BUDGETS)
+    parser.add_argument(
+        "--budgets",
+        type=_comma_separated_ints,
+        default=DEFAULT_BUDGETS,
+    )
     parser.add_argument("--shots", type=int, default=1_000)
     parser.add_argument("--latency-shots", type=int, default=200)
     parser.add_argument("--seed", type=int, default=3)

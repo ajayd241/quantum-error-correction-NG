@@ -1,4 +1,8 @@
-"""Noisy rotated-surface-code circuit construction."""
+"""Noisy rotated-surface-code memory circuit construction.
+
+Repeated parity checks reveal the endpoints of physical error chains without
+directly measuring the encoded logical qubit that the decoder must protect.
+"""
 
 from __future__ import annotations
 

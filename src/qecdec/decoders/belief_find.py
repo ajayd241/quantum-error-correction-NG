@@ -12,14 +12,13 @@ from dataclasses import dataclass, field
 from typing import ClassVar
 
 import numpy as np
-from scipy.sparse import csr_matrix
 import stim
+from scipy.sparse import csr_matrix
 
 from qecdec.base import Decoder
 from qecdec.decoders.bp import BPDecoder
 from qecdec.decoders.union_find import UnionFindDecoder
 from qecdec.dem_graph import CheckMatrices, DecodingGraph, build_from_dem
-
 
 _MIN_PROBABILITY = 1e-15
 _MAX_UF_PROBABILITY = 0.5 - 1e-12
@@ -102,7 +101,10 @@ class BeliefFindDecoder(Decoder):
         """
         probabilities = np.asarray(mechanism_probabilities, dtype=np.float64)
         expected_width = int(self.matrices.H.shape[1])
-        if probabilities.ndim not in (1, 2) or probabilities.shape[-1] != expected_width:
+        if (
+            probabilities.ndim not in (1, 2)
+            or probabilities.shape[-1] != expected_width
+        ):
             raise ValueError(
                 "mechanism probabilities have shape "
                 f"{probabilities.shape}, expected ({expected_width},) or "
