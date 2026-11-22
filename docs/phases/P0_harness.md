@@ -17,9 +17,9 @@ Build the "measuring tape": generate surface-code noise with stim, turn the dete
 
 ## Checklist
 ### Setup
-- [ ] `pyproject.toml` (package `qecdec`, src layout, `[dev]` extras: pytest, matplotlib, pandas)
-- [ ] `pip install -e ".[dev]"` works; `python -c "import stim, pymatching"` prints versions
-- [ ] `pytest.ini` / pyproject section registering the `slow` marker
+- [x] `pyproject.toml` (package `qecdec`, src layout, `[dev]` extras: pytest, matplotlib, pandas)
+- [x] `pip install -e ".[dev]"` works; `python -c "import stim, pymatching"` prints versions
+- [x] `pytest.ini` / pyproject section registering the `slow` marker
 
 ### Circuits
 - [ ] `circuits.make_circuit(d, p, rounds=None, basis="z")` using `surface_code:rotated_memory_z` and all four noise knobs set to `p`
