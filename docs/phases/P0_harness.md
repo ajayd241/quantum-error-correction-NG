@@ -51,9 +51,9 @@ Build the "measuring tape": generate surface-code noise with stim, turn the dete
 - [x] `@slow`: LER(d=5) < LER(d=3) at p = 0.002
 
 ### Results
-- [ ] Baseline sweep: d ∈ {3,5,7}, 8 p-values, ≥ 20k shots
-- [ ] Plot saved. The curves should cross somewhere around p ≈ 0.5–1% (the threshold)
-- [ ] Numbers logged in `PROGRESS.md`
+- [x] Baseline sweep: d ∈ {3,5,7}, 8 p-values, ≥ 20k shots
+- [x] Plot saved. The curves should cross somewhere around p ≈ 0.5–1% (the threshold)
+- [x] Numbers logged in `PROGRESS.md`
 
 ## Acceptance criteria
 1. `pytest -q -m "not slow"` is green.
