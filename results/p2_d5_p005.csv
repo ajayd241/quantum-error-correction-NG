@@ -1,0 +1,2 @@
+decoder,d,p,rounds,shots,failures,ler_shot,ler_shot_err,ler_round,t_mean_us,t_p50_us,t_p99_us,extra,seed
+bp,5,0.005,5,20000,1433,0.07165,0.0018236814072090553,0.01475929038950441,2951.2333833,1525.6455,8749.07816,"{""alpha"": 1.0, ""converged_mean_iterations"": 4.671744509743273, ""convergence_rate"": 0.6466, ""max_iter"": 30, ""mean_iterations"": 13.62275, ""shots_decoded"": 20000}",15459343435847105904

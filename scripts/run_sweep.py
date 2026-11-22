@@ -48,6 +48,12 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--shots", type=int, default=20_000)
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument(
+        "--alpha",
+        type=float,
+        default=None,
+        help="optional normalization passed to BP-family decoders",
+    )
+    parser.add_argument(
         "--out",
         type=Path,
         default=Path("results/baseline_pymatching.csv"),
@@ -57,6 +63,9 @@ def _build_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     args = _build_parser().parse_args()
+    decoder_options = {}
+    if args.alpha is not None:
+        decoder_options["alpha"] = args.alpha
     frame = sweep(
         decoders=args.decoders,
         distances=args.distances,
@@ -64,6 +73,7 @@ def main() -> None:
         shots=args.shots,
         seed=args.seed,
         out_csv=args.out,
+        **decoder_options,
     )
     print(f"Wrote {len(frame)} experiment points to {args.out}")
     print(
