@@ -3,7 +3,7 @@
 ## Status
 | Phase | Status | Key result |
 |---|---|---|
-| P0 Harness + baseline | 🟨 in progress | Setup complete: stim 1.16.0, PyMatching 2.4.0 |
+| P0 Harness + baseline | 🟨 in progress | Checkpoint A: PyMatching single-fault 100% at d=3 and d=5 |
 | P1 Union-Find | ⬜ not started | |
 | P2 Belief Propagation | ⬜ not started | |
 | P3 Belief-find + budget study | ⬜ not started | |
@@ -28,6 +28,7 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
 - 2026-11-21 | planning | Agent assets created (HACKATHON, IMPLEMENTATION_PLAN, phases P0–P6, CLAUDE.md). Learning: Lesson 1 (repetition code) done; Lessons 2–6 will be taught inline during P0–P2.
 - 2026-11-21 | planning | Pre-flight check (stim 1.x, PyMatching 2.x), p=0.005, rounds=d. d=3: D=24, 286 mechanisms → 78 merged edges. d=5: D=120, 1953 mechanisms → 502 edges. 0 observable conflicts. PyMatching single-fault test = 100% at d=3 and d=5, so the test design is valid.
 - 2026-11-21 | P0 | Created `p0-harness`, added the `qecdec` src-layout package, and installed development dependencies. Versions: stim 1.16.0, PyMatching 2.4.0; host Python 3.9.6.
+- 2026-11-21 | P0 Checkpoint A | Built circuit/DEM infrastructure and PyMatching reference. At p=0.005, rounds=d: d=3 has D=24, 286 mechanisms, 78 merged edges; d=5 has D=120, 1953 mechanisms, 502 merged edges; 0 observable conflicts. Single-fault pass rate 100% at both distances; fast suite 8 passed.
 
 ## Decision log
 | # | Decision | Why |

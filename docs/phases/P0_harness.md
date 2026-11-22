@@ -45,9 +45,9 @@ Build the "measuring tape": generate surface-code noise with stim, turn the dete
 - [ ] `scripts/plot_results.py`: log-log LER vs p with one colour per d, one line style per decoder, error bars
 
 ### Tests
-- [ ] `test_dem_graph.py`: D+1 nodes; all probs in (0, 0.5); every mechanism's H column matches its detector targets; `mech_to_edges` covers every edge
+- [x] `test_dem_graph.py`: D+1 nodes; all probs in (0, 0.5); every mechanism's H column matches its detector targets; `mech_to_edges` covers every edge
 - [ ] `test_harness.py`: zero syndrome → zero prediction (PyMatching); a fixed seed gives the same failures twice
-- [ ] Single-fault test for PyMatching (d = 3, 5): 100%
+- [x] Single-fault test for PyMatching (d = 3, 5): 100%
 - [ ] `@slow`: LER(d=5) < LER(d=3) at p = 0.002
 
 ### Results
