@@ -8,7 +8,7 @@ import pytest
 
 from qecdec.circuits import make_circuit
 from qecdec.decoders.pymatching_ref import PyMatchingDecoder
-from qecdec.harness import evaluate, sample, sweep
+from qecdec.harness import _point_seed, evaluate, sample, sweep
 
 
 def test_zero_syndrome_has_zero_prediction() -> None:
@@ -63,6 +63,20 @@ def test_sweep_writes_csv_with_recorded_seed(tmp_path) -> None:
     assert len(frame) == len(from_disk) == 1
     assert frame.loc[0, "seed"] == from_disk.loc[0, "seed"]
     assert from_disk.loc[0, "decoder"] == "pymatching"
+
+
+def test_point_seed_depends_on_probability_not_grid_position() -> None:
+    low_first = {
+        probability: _point_seed(7, 5, probability)
+        for probability in [0.002, 0.005]
+    }
+    high_first = {
+        probability: _point_seed(7, 5, probability)
+        for probability in [0.005, 0.002]
+    }
+
+    assert low_first == high_first
+    assert low_first[0.002] != low_first[0.005]
 
 
 @pytest.mark.slow

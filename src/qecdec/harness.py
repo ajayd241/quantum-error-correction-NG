@@ -132,10 +132,17 @@ def evaluate(
     )
 
 
-def _point_seed(base_seed: int, distance: int, probability_index: int) -> int:
+def _point_seed(base_seed: int, distance: int, probability: float) -> int:
     """Derive a stable seed shared by all decoders at one sweep point."""
+    probability_bits = int(np.float64(probability).view(np.uint64))
     sequence = np.random.SeedSequence(
-        [base_seed, distance, probability_index]
+        [
+            base_seed & 0xFFFFFFFF,
+            (base_seed >> 32) & 0xFFFFFFFF,
+            distance & 0xFFFFFFFF,
+            probability_bits & 0xFFFFFFFF,
+            probability_bits >> 32,
+        ]
     )
     return int(sequence.generate_state(1, dtype=np.uint64)[0])
 
@@ -162,8 +169,8 @@ def sweep(
     probabilities = [float(p) for p in ps]
     for decoder_name in decoders:
         for distance in distances:
-            for probability_index, probability in enumerate(probabilities):
-                point_seed = _point_seed(seed, distance, probability_index)
+            for probability in probabilities:
+                point_seed = _point_seed(seed, distance, probability)
                 result = evaluate(
                     decoder_name=decoder_name,
                     d=distance,
