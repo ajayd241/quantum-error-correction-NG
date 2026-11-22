@@ -163,11 +163,42 @@ class UnionFindDecoder(Decoder):
             )
         return normalized
 
+    def _thresholds_for(self, weights: np.ndarray | None) -> np.ndarray:
+        """Discretize optional per-shot likelihoods using the fixed graph scale.
+
+        Belief-find changes edge likelihoods for each syndrome.  Reusing the
+        scale chosen from the original DEM keeps those lengths comparable and
+        makes a zero-iteration belief-find decode identical to weighted UF.
+        """
+        if weights is None:
+            return self.growth_thresholds
+        if not self.weighted:
+            raise ValueError("per-shot weights require weighted Union-Find")
+
+        normalized = np.asarray(weights, dtype=np.float64)
+        expected = (len(self.graph.edge_u),)
+        if normalized.shape != expected:
+            raise ValueError(
+                f"weights have shape {normalized.shape}, expected {expected}"
+            )
+        if np.any(~np.isfinite(normalized)) or np.any(normalized < 0.0):
+            raise ValueError("weights must be finite and nonnegative")
+        return np.maximum(
+            1,
+            np.rint(normalized * self.weight_scale),
+        ).astype(np.int32)
+
     def _grow(
         self,
         syndrome: np.ndarray,
+        growth_thresholds: np.ndarray | None = None,
     ) -> tuple[np.ndarray, _ClusterState, int]:
         """Grow odd clusters and return the edges that reached full support."""
+        thresholds = (
+            self.growth_thresholds
+            if growth_thresholds is None
+            else growth_thresholds
+        )
         state = self._initial_state(syndrome)
         support = np.zeros(len(self.graph.edge_u), dtype=np.int32)
         fully_grown = np.zeros(len(self.graph.edge_u), dtype=np.bool_)
@@ -202,7 +233,7 @@ class UnionFindDecoder(Decoder):
 
             rounds_to_event = min(
                 (
-                    int(self.growth_thresholds[edge])
+                    int(thresholds[edge])
                     - int(support[edge])
                     + rate
                     - 1
@@ -214,8 +245,8 @@ class UnionFindDecoder(Decoder):
             newly_full: list[int] = []
             for edge, rate in edge_rates.items():
                 support[edge] += rounds_to_event * rate
-                if support[edge] >= self.growth_thresholds[edge]:
-                    support[edge] = self.growth_thresholds[edge]
+                if support[edge] >= thresholds[edge]:
+                    support[edge] = thresholds[edge]
                     fully_grown[edge] = True
                     newly_full.append(edge)
 
@@ -277,10 +308,15 @@ class UnionFindDecoder(Decoder):
             raise RuntimeError("peeling failed to reproduce the detector syndrome")
         return correction
 
-    def decode_outcome(self, syndrome: np.ndarray) -> DecodeOutcome:
+    def decode_outcome(
+        self,
+        syndrome: np.ndarray,
+        weights: np.ndarray | None = None,
+    ) -> DecodeOutcome:
         """Decode one sample and expose its correction and growth metrics."""
         normalized = self._validate_syndrome(syndrome)
-        fully_grown, state, growth_rounds = self._grow(normalized)
+        thresholds = self._thresholds_for(weights)
+        fully_grown, state, growth_rounds = self._grow(normalized, thresholds)
         correction = self._peel(normalized, fully_grown)
         if np.any(correction):
             prediction = np.logical_xor.reduce(
@@ -301,9 +337,13 @@ class UnionFindDecoder(Decoder):
             num_clusters=num_clusters,
         )
 
-    def decode(self, syndrome: np.ndarray) -> np.ndarray:
+    def decode(
+        self,
+        syndrome: np.ndarray,
+        weights: np.ndarray | None = None,
+    ) -> np.ndarray:
         """Predict logical flips by growing and peeling neutral clusters."""
-        outcome = self.decode_outcome(syndrome)
+        outcome = self.decode_outcome(syndrome, weights=weights)
         self._growth_rounds.append(outcome.growth_rounds)
         self._cluster_counts.append(outcome.num_clusters)
         return outcome.prediction

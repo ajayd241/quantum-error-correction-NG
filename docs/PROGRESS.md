@@ -6,7 +6,7 @@
 | P0 Harness + baseline | ✅ done | PyMatching threshold ≈ 0.695%; single-fault 100% |
 | P1 Union-Find | ✅ done | Weighted threshold ≈ 0.658%; single-fault 100%; max LER ratio 1.22× PM |
 | P2 Belief Propagation | ✅ done | d=5, p=0.005: LER 7.165%, convergence 64.66%; batch speed-up 1.31× |
-| P3 Belief-find + budget study | ⬜ not started | |
+| P3 Belief-find + budget study | ✅ done | k=2 matched k=32 accuracy at 50% of mean p99 latency; BF significantly beat UF |
 | P4 Our MWPM (stretch) | ⬜ not started | |
 | P5 Metrics + repo | ⬜ not started | |
 | P6 Talk | ⬜ not started | |
@@ -20,7 +20,7 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
 | UF (unweighted) | 0.539% | 0.0197 | 467.02 / 952.47 | weighted UF wins at all 24 sweep points |
 | UF (weighted) | 0.658% | 0.0153 | 543.40 / 1321.15 | 1.12× PM LER; growth rounds mean/p99 7.06/15 |
 | BP (min-sum) | no crossing in tested grid | 0.07165 | 1525.65 / 8749.08 | α=1.0; convergence rate 64.66% |
-| Belief-find | | | | fast-path fraction: |
+| Belief-find | budget study complete | 0.0118 | 8381.40 / 11427.77 | 5k shots; fast-path fraction 34.96% |
 | MWPM (networkx) | | | | d ≤ 5 only |
 
 ## Log
@@ -36,6 +36,8 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
 - 2026-11-22 | P2 BP core | Implemented batched normalized min-sum BP over whole DEM mechanisms, with deterministic chunking and active-shot compaction. Tree-code exactness and batch/loop bit-equivalence pass. At d=3, p=0.005, logical single-fault accuracy was 266/286 (93.0%) and hard-decision convergence was 178/286 (62.2%).
 - 2026-11-22 | P2 alpha + throughput | On 2,000 paired d=5, p=0.005 shots (seed 20261122), α=1.0 beat 0.75 and 0.625: LER 0.0665 vs 0.0955/0.1705 and convergence 65.95% vs 52.95%/35.70%. On the first 1,000 shots, batch=1,000 delivered 342 shots/s vs 261 shots/s at batch=1 (1.31×); predictions were identical.
 - 2026-11-22 | P2 sweep | Completed 24 BP points at α=1.0 (d=3,5,7; 8 p-values; 1k shots/point; base seed 1), plus a 20k-shot d=5, p=0.005 point. At p≈0.00474, LER/convergence were d=3 0.032/92.7%, d=5 0.070/66.3%, d=7 0.147/23.0%. At exact d=5, p=0.005: LER 0.07165, convergence 64.66%, p50/p99 1525.65/8749.08 µs. Full suite: 41 passed. Talk point: BP's local updates are parallel and produce useful soft beliefs, but loops and degeneracy make standalone hard decisions worse as distance grows; belief-find uses UF to finish the job.
+- 2026-11-22 | P3 belief-find core | Implemented BP-posterior XOR reweighting with sparse edge×mechanism incidence, per-shot UF weights at a fixed scale, and the optional BP-converged fast path. k=0 matched weighted UF bit-for-bit on 2,000 shots; default α=0.625 corrected all 286 d=3 single faults. At d=5, p=0.005 on 5,000 paired shots (seed 20261123), BF had 52 failures (LER 1.04% ± 0.14%) versus UF's 71 (1.42% ± 0.17%); the one-sigma intervals do not overlap.
+- 2026-11-22 | P3 budget study | Completed 96 rows: k={0,1,2,4,8,16,32}, fast path on/off, d={3,5,7}, p={0.0035,0.00625}, 1,000 shots/point, base seed 3, with UF/PyMatching baselines. Finding: k=2 matched k=32 accuracy within sampling noise (83 vs 87 aggregate failures) using 50% of k=32's mean p99 latency; k=32 fast-path use fell from 72.5–84.8% at d=3 to 1.0–5.3% at d=7. Exact d=5, p=0.005 (5k shots, sweep seed 1): LER 1.18%, p50/p99 8381.40/11427.77 µs, fast-path fraction 34.96%. Full suite: 45 passed. Talk point: extra loopy-BP iterations are not monotonically helpful, and a BP fast path cuts average work more readily than p99 because the tail is dominated by shots that do not converge.
 
 ## Decision log
 | # | Decision | Why |
@@ -51,3 +53,4 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
 | 9 | Derive each sweep seed from base seed, distance, and the exact float bits of p | A `(d, p)` point must retain the same noise seed when the probability grid is reordered or subset; all decoders at that point still share the seed |
 | 10 | Scale UF log-likelihood weights so the median integer edge length is 10, then jump directly to the next growth event | This preserves useful probability resolution without paying one Python loop per support unit |
 | 11 | Use α=1.0 for the P2 BP sweep while retaining the specified API default of 0.75 | It had the lowest paired failure count and highest convergence of α ∈ {0.625, 0.75, 1.0} at d=5, p=0.005; keeping the default preserves the planned interface and makes tuning explicit |
+| 12 | Use α=0.625 as the belief-find default | On the P3 hybrid, it preserved 100% d=3 single-fault accuracy and still significantly beat UF near threshold; the standalone-BP optimum did not transfer directly to BP-guided UF |
