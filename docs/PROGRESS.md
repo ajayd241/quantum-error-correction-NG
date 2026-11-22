@@ -43,6 +43,7 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
 - 2026-11-22 | P5 parallel scaling | On 16 fixed jobs (PyMatching + weighted UF, d={3,5}, four p-values, 500 shots/job), wall time was 3.206/2.418/1.871 s with 1/2/4 workers: 1.00×/1.33×/1.71× speedup. Talk point: independent decoding work is parallelizable, but process startup, decoder construction, and load imbalance make end-to-end scaling strongly sublinear at this workload.
 - 2026-11-22 | P5 publish | Packaged the final CSVs and figures, added the public clone URL, merged P5 to `main`, and tagged `v1.0-hackathon`.
 - 2026-11-22 | P5 judge guide | Added copy-paste commands for every decoder, parameter/config documentation, plotting and CSV references, and programmatic `evaluate`/raw-prediction examples in README.md and docs/USAGE.md. Smoke-tested all five registry names plus the final k=2 belief-find config.
+- 2026-11-22 | P5 results narrative | Added docs/RESULTS_NARRATIVE.md: one evidence-graded story from the PyMatching ruler through weighted UF, standalone BP's negative result, the belief-find handoff, the k=2 budget knee, and sublinear process scaling. Saved a talk-ready 90-second version and explicit no-overclaim boundaries.
 
 ## Decision log
 | # | Decision | Why |
