@@ -22,8 +22,8 @@ Build the "measuring tape": generate surface-code noise with stim, turn the dete
 - [x] `pytest.ini` / pyproject section registering the `slow` marker
 
 ### Circuits
-- [ ] `circuits.make_circuit(d, p, rounds=None, basis="z")` using `surface_code:rotated_memory_z` and all four noise knobs set to `p`
-- [ ] Docstring explains each of the four noise parameters in one line
+- [x] `circuits.make_circuit(d, p, rounds=None, basis="z")` using `surface_code:rotated_memory_z` and all four noise knobs set to `p`
+- [x] Docstring explains each of the four noise parameters in one line
 
 ### DEM → graph and matrices (`dem_graph.py`)
 - [ ] Parse `dem.flattened()` error instructions; split on separators
