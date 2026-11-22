@@ -40,8 +40,8 @@ Turn working code into something judges can clone, run and believe: a full sweep
 ### Publish
 - [x] `.gitignore` (venv, __pycache__, large raw CSVs if any)
 - [x] Commit `results/final.csv` and the figures, so judges can see results without running anything
-- [ ] Create the public GitHub repo and push; check that the README renders and the images load
-- [ ] Tag `v1.0-hackathon`
+- [x] Create the public GitHub repo and push; check that the README renders and the images load
+- [x] Tag `v1.0-hackathon`
 
 ## Acceptance criteria
 1. A fresh clone runs `pip install -e ".[dev]" && pytest -q` successfully.

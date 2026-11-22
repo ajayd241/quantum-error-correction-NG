@@ -14,7 +14,7 @@ and measures the resulting accuracy–latency–parallelism tradeoff reproducibl
 Python 3.9 or newer is supported.
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/ajayd241/quantum-error-correction-NG.git
 cd quantum-error-correction-NG
 python3 -m venv .venv
 source .venv/bin/activate

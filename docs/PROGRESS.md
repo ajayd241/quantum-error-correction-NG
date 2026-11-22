@@ -8,7 +8,7 @@
 | P2 Belief Propagation | ✅ done | d=5, p=0.005: LER 7.165%, convergence 64.66%; batch speed-up 1.31× |
 | P3 Belief-find + budget study | ✅ done | k=2 matched k=32 accuracy at 50% of mean p99 latency; BF significantly beat UF |
 | P4 Our MWPM (stretch) | ⬜ not started | |
-| P5 Metrics + repo | 🟨 in progress | Parallel final-sweep and figure-suite infrastructure added |
+| P5 Metrics + repo | ✅ done | 120-point final sweep; 49 tests; 4-worker speedup 1.71× |
 | P6 Talk | ⬜ not started | |
 
 Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
@@ -41,6 +41,7 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
 - 2026-11-22 | P5 final sweep | Completed 120 points with 4 workers in 271.41 s: 5 decoders, d={3,5,7}, 8 p-values, seed 5. d=5, p=0.005 LER: PM 1.32%, unweighted UF 1.64%, weighted UF 1.44%, BP 8.80%, belief-find k=2 1.60%. d=5/d=7 crossings: PM 0.719%, unweighted UF 0.465%, weighted UF 0.643%, belief-find 0.774% (noisy 1k-shot estimate); BP had no crossing. Talk point: the cheap k=2 hybrid matched long-budget aggregate accuracy in P3 but did not beat UF at every final-sweep point, so iteration savings trade away robustness as well as latency.
 - 2026-11-22 | P5 quality | Added config-driven multiprocessing, final plots, README, MIT license, Ruff, and CI. Clean-tree Python 3.9 verification: editable install succeeded after upgrading bundled pip; `ruff check .` clean; full suite 48 passed in 78.23 s.
 - 2026-11-22 | P5 parallel scaling | On 16 fixed jobs (PyMatching + weighted UF, d={3,5}, four p-values, 500 shots/job), wall time was 3.206/2.418/1.871 s with 1/2/4 workers: 1.00×/1.33×/1.71× speedup. Talk point: independent decoding work is parallelizable, but process startup, decoder construction, and load imbalance make end-to-end scaling strongly sublinear at this workload.
+- 2026-11-22 | P5 publish | Packaged the final CSVs and figures, added the public clone URL, merged P5 to `main`, and tagged `v1.0-hackathon`.
 
 ## Decision log
 | # | Decision | Why |
