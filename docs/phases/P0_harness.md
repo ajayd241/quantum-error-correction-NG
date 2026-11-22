@@ -26,11 +26,11 @@ Build the "measuring tape": generate surface-code noise with stim, turn the dete
 - [x] Docstring explains each of the four noise parameters in one line
 
 ### DEM → graph and matrices (`dem_graph.py`)
-- [ ] Parse `dem.flattened()` error instructions; split on separators
-- [ ] Build `DecodingGraph` with boundary node `D`, merged parallel edges, and an observable mask per edge
-- [ ] Build `CheckMatrices` (`H`, `L`, `priors`, `mech_to_edges`) from the **same** decomposed DEM
-- [ ] Count and expose `num_obs_conflicts` (parallel edges whose observable masks differ)
-- [ ] CSR adjacency arrays
+- [x] Parse `dem.flattened()` error instructions; split on separators
+- [x] Build `DecodingGraph` with boundary node `D`, merged parallel edges, and an observable mask per edge
+- [x] Build `CheckMatrices` (`H`, `L`, `priors`, `mech_to_edges`) from the **same** decomposed DEM
+- [x] Count and expose `num_obs_conflicts` (parallel edges whose observable masks differ)
+- [x] CSR adjacency arrays
 
 ### Decoder interface + reference
 - [ ] `base.Decoder` ABC exactly as in IMPLEMENTATION_PLAN §4

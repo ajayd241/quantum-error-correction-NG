@@ -39,3 +39,4 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
 | 5 | Noise: stim uniform depolarizing, all four knobs = p; rotated memory Z; rounds = d | Standard, simple, comparable to the literature |
 | 6 | Lessons 2–6 taught just-in-time during coding | The human wants to start building. Concepts stick better next to real stim output |
 | 7 | Support Python 3.9+ and postpone annotation evaluation | The available system interpreter is Python 3.9.6; this preserves the specified interfaces without adding an environment-management dependency |
+| 8 | Resolve equal-probability observable-mask conflicts with a deterministic bytewise tie-break | The plan says to keep the more likely mask but does not define ties; a stable tie-break prevents DEM iteration order from changing the graph |
