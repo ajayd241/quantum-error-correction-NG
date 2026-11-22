@@ -22,38 +22,38 @@ Why it's fast: each step only touches a blot's edges, and merges are nearly O(1)
 
 ## Checklist
 ### Data structures
-- [ ] Disjoint-set arrays over D+1 nodes: `parent`, `rank` (or `size`), with path compression
-- [ ] Per-root cluster attributes: `parity` (defect count mod 2), `touches_boundary`
-- [ ] Per-edge `support` (int) and a `fully_grown` boolean
-- [ ] Per-root list of boundary edges (edges leaving the cluster), so growth doesn't scan all E edges
+- [x] Disjoint-set arrays over D+1 nodes: `parent`, `rank` (or `size`), with path compression
+- [x] Per-root cluster attributes: `parity` (defect count mod 2), `touches_boundary`
+- [x] Per-edge `support` (int) and a `fully_grown` boolean
+- [x] Per-root list of boundary edges (edges leaving the cluster), so growth doesn't scan all E edges
 
 ### v1: unweighted (half-edge growth)
-- [ ] Initialise: each node is its own set. Parity = 1 for defects. The boundary node has `touches_boundary=True`
-- [ ] A cluster is **active** if `parity == 1 and not touches_boundary`
-- [ ] Growth step: each active cluster adds +1 support to each of its boundary edges. An edge is full at support 2
-- [ ] Collect newly full edges, then `union` their endpoints: XOR the parities, OR the boundary flags, concatenate the boundary-edge lists
-- [ ] Loop until no active clusters remain
-- [ ] Peel: build a BFS spanning forest over **fully grown edges only**. Root the tree at the boundary node if the cluster contains it, otherwise at any node. Process nodes in reverse BFS order: if a node is still marked as a defect, add its parent edge to the correction and toggle the parent's defect flag. Ignore the boundary node's flag
-- [ ] Prediction = XOR of `edge_obs` over the correction edges
+- [x] Initialise: each node is its own set. Parity = 1 for defects. The boundary node has `touches_boundary=True`
+- [x] A cluster is **active** if `parity == 1 and not touches_boundary`
+- [x] Growth step: each active cluster adds +1 support to each of its boundary edges. An edge is full at support 2
+- [x] Collect newly full edges, then `union` their endpoints: XOR the parities, OR the boundary flags, concatenate the boundary-edge lists
+- [x] Loop until no active clusters remain
+- [x] Peel: build a BFS spanning forest over **fully grown edges only**. Root the tree at the boundary node if the cluster contains it, otherwise at any node. Process nodes in reverse BFS order: if a node is still marked as a defect, add its parent edge to the correction and toggle the parent's defect flag. Ignore the boundary node's flag
+- [x] Prediction = XOR of `edge_obs` over the correction edges
 
 ### v2: weighted
-- [ ] Integer weights: `w_int = max(1, round(edge_weight * scale))`, with `scale` chosen so the median `w_int` ≈ 10. The edge is full when `support >= w_int`
-- [ ] Each step, each active cluster adds +1 to each of its boundary edges. An edge between two active clusters gets +2
-- [ ] Optional speed-up ("event jump"): grow by `min(remaining / rate)` across all frontier edges instead of 1 unit at a time
-- [ ] Constructor flag `weighted: bool = True`; register both as `"uf"` (weighted) and `"uf_unweighted"`
+- [x] Integer weights: `w_int = max(1, round(edge_weight * scale))`, with `scale` chosen so the median `w_int` ≈ 10. The edge is full when `support >= w_int`
+- [x] Each step, each active cluster adds +1 to each of its boundary edges. An edge between two active clusters gets +2
+- [x] Optional speed-up ("event jump"): grow by `min(remaining / rate)` across all frontier edges instead of 1 unit at a time
+- [x] Constructor flag `weighted: bool = True`; register both as `"uf"` (weighted) and `"uf_unweighted"`
 
 ### Tests (`test_union_find.py`)
-- [ ] Zero syndrome → zero prediction, zero growth rounds
-- [ ] 5-bit repetition-code toy graph: single errors, an adjacent pair, an error at the boundary. Hand-check the answers
-- [ ] **Single fault, d=3 and d=5: 100%** (both unweighted and weighted)
-- [ ] Agreement with PyMatching ≥ 99% at p = 0.001, d = 5 (10k shots)
-- [ ] Peeling invariant: syndrome of the correction == the input syndrome (check this on random shots)
-- [ ] `@slow`: LER_UF ≤ 3× LER_PM for d ∈ {3,5} at p = 0.003
+- [x] Zero syndrome → zero prediction, zero growth rounds
+- [x] 5-bit repetition-code toy graph: single errors, an adjacent pair, an error at the boundary. Hand-check the answers
+- [x] **Single fault, d=3 and d=5: 100%** (both unweighted and weighted)
+- [x] Agreement with PyMatching ≥ 99% at p = 0.001, d = 5 (10k shots)
+- [x] Peeling invariant: syndrome of the correction == the input syndrome (check this on random shots)
+- [x] `@slow`: LER_UF ≤ 3× LER_PM for d ∈ {3,5} at p = 0.003
 
 ### Results
-- [ ] Add `uf` and `uf_unweighted` to the sweep; regenerate the plot
-- [ ] Record the growth-rounds distribution vs d (parallel-depth proxy)
-- [ ] Log in PROGRESS.md: LER ratio to PyMatching, rough UF threshold, latency
+- [x] Add `uf` and `uf_unweighted` to the sweep; regenerate the plot
+- [x] Record the growth-rounds distribution vs d (parallel-depth proxy)
+- [x] Log in PROGRESS.md: LER ratio to PyMatching, rough UF threshold, latency
 
 ## Acceptance criteria
 1. Single-fault test passes 100%.
