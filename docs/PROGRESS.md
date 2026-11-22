@@ -5,7 +5,7 @@
 |---|---|---|
 | P0 Harness + baseline | ✅ done | PyMatching threshold ≈ 0.695%; single-fault 100% |
 | P1 Union-Find | ✅ done | Weighted threshold ≈ 0.658%; single-fault 100%; max LER ratio 1.22× PM |
-| P2 Belief Propagation | ⬜ not started | |
+| P2 Belief Propagation | ✅ done | d=5, p=0.005: LER 7.165%, convergence 64.66%; batch speed-up 1.31× |
 | P3 Belief-find + budget study | ⬜ not started | |
 | P4 Our MWPM (stretch) | ⬜ not started | |
 | P5 Metrics + repo | ⬜ not started | |
@@ -19,7 +19,7 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
 | PyMatching (ref) | 0.695% (pairwise 0.688–0.699%) | 0.0137 | 9.50 / 35.10 | 20k shots; seed 15459343435847105904 |
 | UF (unweighted) | 0.539% | 0.0197 | 467.02 / 952.47 | weighted UF wins at all 24 sweep points |
 | UF (weighted) | 0.658% | 0.0153 | 543.40 / 1321.15 | 1.12× PM LER; growth rounds mean/p99 7.06/15 |
-| BP (min-sum) | | | | convergence rate: |
+| BP (min-sum) | no crossing in tested grid | 0.07165 | 1525.65 / 8749.08 | α=1.0; convergence rate 64.66% |
 | Belief-find | | | | fast-path fraction: |
 | MWPM (networkx) | | | | d ≤ 5 only |
 
@@ -33,6 +33,9 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
 - 2026-11-22 | P1 unweighted UF | Implemented half-edge cluster growth, disjoint-set merging, and BFS forest peeling. Single-fault pass rate: d=3 286/286, d=5 1953/1953; correction-syndrome invariant: 1,000/1,000 sampled d=3 shots; focused suite 9 passed.
 - 2026-11-22 | P1 weighted UF | Added likelihood-weighted growth with median integer edge length 10 and event jumps. Both UF variants pass every single fault at d=3/5 and the 1,000-shot peeling invariant; weighted UF agrees with PyMatching on ≥99% of 10k low-noise d=5 shots. At p=0.003, weighted/PM failure ratios were 0.98× (d=3) and 1.06× (d=5), while weighted beat unweighted by 24–26%.
 - 2026-11-22 | P1 sweep | Completed 72 points (PyMatching, weighted UF, unweighted UF; d=3,5,7; 8 p-values; 20k shots/point). Pairwise-crossing medians: PM 0.695%, weighted UF 0.658%, unweighted UF 0.539%; weighted beat unweighted at all 24 matched points and its worst failure-count ratio to PM was 1.22×. At d=5, p=0.005: weighted LER 0.0153, p50/p99 543.40/1321.15 µs; unweighted 0.0197, 467.02/952.47 µs. Weighted growth mean/p99 at p≈0.00474: d=3 3.97/10, d=5 6.97/15, d=7 8.25/16. Talk point: probability-aware growth recovers most of MWPM's accuracy while retaining local, parallel cluster operations, but this pure-Python reference is much slower than optimized PyMatching.
+- 2026-11-22 | P2 BP core | Implemented batched normalized min-sum BP over whole DEM mechanisms, with deterministic chunking and active-shot compaction. Tree-code exactness and batch/loop bit-equivalence pass. At d=3, p=0.005, logical single-fault accuracy was 266/286 (93.0%) and hard-decision convergence was 178/286 (62.2%).
+- 2026-11-22 | P2 alpha + throughput | On 2,000 paired d=5, p=0.005 shots (seed 20261122), α=1.0 beat 0.75 and 0.625: LER 0.0665 vs 0.0955/0.1705 and convergence 65.95% vs 52.95%/35.70%. On the first 1,000 shots, batch=1,000 delivered 342 shots/s vs 261 shots/s at batch=1 (1.31×); predictions were identical.
+- 2026-11-22 | P2 sweep | Completed 24 BP points at α=1.0 (d=3,5,7; 8 p-values; 1k shots/point; base seed 1), plus a 20k-shot d=5, p=0.005 point. At p≈0.00474, LER/convergence were d=3 0.032/92.7%, d=5 0.070/66.3%, d=7 0.147/23.0%. At exact d=5, p=0.005: LER 0.07165, convergence 64.66%, p50/p99 1525.65/8749.08 µs. Full suite: 41 passed. Talk point: BP's local updates are parallel and produce useful soft beliefs, but loops and degeneracy make standalone hard decisions worse as distance grows; belief-find uses UF to finish the job.
 
 ## Decision log
 | # | Decision | Why |
@@ -47,3 +50,4 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done · ✂️ cut
 | 8 | Resolve equal-probability observable-mask conflicts with a deterministic bytewise tie-break | The plan says to keep the more likely mask but does not define ties; a stable tie-break prevents DEM iteration order from changing the graph |
 | 9 | Derive each sweep seed from base seed, distance, and the exact float bits of p | A `(d, p)` point must retain the same noise seed when the probability grid is reordered or subset; all decoders at that point still share the seed |
 | 10 | Scale UF log-likelihood weights so the median integer edge length is 10, then jump directly to the next growth event | This preserves useful probability resolution without paying one Python loop per support unit |
+| 11 | Use α=1.0 for the P2 BP sweep while retaining the specified API default of 0.75 | It had the lowest paired failure count and highest convergence of α ∈ {0.625, 0.75, 1.0} at d=5, p=0.005; keeping the default preserves the planned interface and makes tuning explicit |
