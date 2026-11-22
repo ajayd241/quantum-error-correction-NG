@@ -23,6 +23,59 @@ python -m pip install -e ".[dev]"
 pytest -q
 ```
 
+## Run the decoders
+
+The files in `src/qecdec/decoders/` are library modules; they are not intended
+to be executed directly. Run them through `scripts/run_sweep.py`, which gives
+every decoder the same seeded noise samples and writes comparable metrics.
+
+Try all five implemented decoders at one small operating point:
+
+```bash
+python scripts/run_sweep.py \
+  --decoders pymatching,uf_unweighted,uf,bp,belief_find \
+  --distances 3 \
+  --ps 0.005 \
+  --shots 100 \
+  --seed 1 \
+  --workers 1 \
+  --out results/quick_demo.csv
+```
+
+Run one decoder at a time:
+
+```bash
+# Optimized PyMatching reference
+python scripts/run_sweep.py --decoders pymatching --distances 5 \
+  --ps 0.005 --shots 1000 --out results/pymatching_demo.csv
+
+# Unweighted Union-Find
+python scripts/run_sweep.py --decoders uf_unweighted --distances 5 \
+  --ps 0.005 --shots 1000 --out results/uf_unweighted_demo.csv
+
+# Probability-weighted Union-Find
+python scripts/run_sweep.py --decoders uf --distances 5 \
+  --ps 0.005 --shots 1000 --out results/uf_demo.csv
+
+# Min-sum belief propagation; alpha is the message-normalization factor
+python scripts/run_sweep.py --decoders bp --distances 5 \
+  --ps 0.005 --shots 250 --alpha 1.0 --out results/bp_demo.csv
+
+# Belief-find with the final study's alpha=0.625 and two BP iterations
+python scripts/run_sweep.py --config configs/final.yaml \
+  --decoders belief_find --distances 5 --ps 0.005 --shots 250 \
+  --workers 1 --skip-benchmark --out results/belief_find_demo.csv
+```
+
+Change `--distances 5` to a comma-separated grid such as `--distances 3,5,7`.
+Likewise, `--ps 0.005` can become `--ps 0.002,0.005,0.01`; `p=0.005`
+means a 0.5% physical error probability. Increase `--shots` for tighter error
+bars, keep `--seed` fixed for reproducibility, and use `--workers N` to run
+independent `(decoder, d, p)` points in parallel.
+
+See **[docs/USAGE.md](docs/USAGE.md)** for every parameter, custom configs,
+plotting, CSV columns, and examples of calling a decoder from Python.
+
 Run the seeded final benchmark and regenerate every final figure:
 
 ```bash
