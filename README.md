@@ -114,6 +114,10 @@ These measurements come from the seeded final sweep. Latencies are single-shot
 Python timings on the development machine, so they compare implementations but
 are not claims of hardware real-time speed.
 
+For a guided interpretation—what the plots mean, which claims are strongest,
+and the single story connecting UF, BP, and belief-find—read
+**[docs/RESULTS_NARRATIVE.md](docs/RESULTS_NARRATIVE.md)**.
+
 | Decoder | Threshold estimate | LER/shot at `d=5, p=0.005` | p50 / p99 latency (µs) |
 |---|---:|---:|---:|
 | PyMatching | 0.719% | 0.0132 (66/5,000) | 5.33 / 15.25 |
