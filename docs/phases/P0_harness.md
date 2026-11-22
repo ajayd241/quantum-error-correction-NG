@@ -41,8 +41,8 @@ Build the "measuring tape": generate surface-code noise with stim, turn the dete
 - [x] `harness.sample()` with a seeded `compile_detector_sampler(seed=...)` and `separate_observables=True`
 - [x] `harness.evaluate()` → `Result` (LER per shot, error bar, LER per round, latency mean/p50/p99)
 - [x] `harness.sweep()` → CSV
-- [ ] `scripts/run_sweep.py` CLI (`--decoders --distances --ps --shots --seed --out`)
-- [ ] `scripts/plot_results.py`: log-log LER vs p with one colour per d, one line style per decoder, error bars
+- [x] `scripts/run_sweep.py` CLI (`--decoders --distances --ps --shots --seed --out`)
+- [x] `scripts/plot_results.py`: log-log LER vs p with one colour per d, one line style per decoder, error bars
 
 ### Tests
 - [x] `test_dem_graph.py`: D+1 nodes; all probs in (0, 0.5); every mechanism's H column matches its detector targets; `mech_to_edges` covers every edge
