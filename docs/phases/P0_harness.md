@@ -46,9 +46,9 @@ Build the "measuring tape": generate surface-code noise with stim, turn the dete
 
 ### Tests
 - [x] `test_dem_graph.py`: D+1 nodes; all probs in (0, 0.5); every mechanism's H column matches its detector targets; `mech_to_edges` covers every edge
-- [ ] `test_harness.py`: zero syndrome → zero prediction (PyMatching); a fixed seed gives the same failures twice
+- [x] `test_harness.py`: zero syndrome → zero prediction (PyMatching); a fixed seed gives the same failures twice
 - [x] Single-fault test for PyMatching (d = 3, 5): 100%
-- [ ] `@slow`: LER(d=5) < LER(d=3) at p = 0.002
+- [x] `@slow`: LER(d=5) < LER(d=3) at p = 0.002
 
 ### Results
 - [ ] Baseline sweep: d ∈ {3,5,7}, 8 p-values, ≥ 20k shots
