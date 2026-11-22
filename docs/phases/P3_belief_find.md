@@ -27,26 +27,26 @@ return WeightedUF(graph with weights w_e, syndrome)
 
 ## Checklist
 ### Implementation (`belief_find.py`)
-- [ ] Precompute the inverse of `mech_to_edges`: for each edge, the list of mechanisms that contain it, as a sparse matrix `M[E, M]`
-- [ ] Vectorized edge-probability combine. Use the identity `1 − 2p_e = Π_j (1 − 2q_j)`, computed through logs: `log|1−2q|` summed by sparse mat-vec, with the sign tracked separately
-- [ ] Refactor `UnionFindDecoder` so its weights can be overridden per shot (`decode(syndrome, weights=None)`) without rebuilding the graph
-- [ ] Params: `bp_iters: int` (k), `fast_path: bool`, `alpha`
-- [ ] `stats()`: fast-path fraction, mean BP iterations used
-- [ ] Register `"belief_find"` (k=30, fast path on) and variants for the study
+- [x] Precompute the inverse of `mech_to_edges`: for each edge, the list of mechanisms that contain it, as a sparse matrix `M[E, M]`
+- [x] Vectorized edge-probability combine. Use the identity `1 − 2p_e = Π_j (1 − 2q_j)`, computed through logs: `log|1−2q|` summed by sparse mat-vec, with the sign tracked separately
+- [x] Refactor `UnionFindDecoder` so its weights can be overridden per shot (`decode(syndrome, weights=None)`) without rebuilding the graph
+- [x] Params: `bp_iters: int` (k), `fast_path: bool`, `alpha`
+- [x] `stats()`: fast-path fraction, mean BP iterations used
+- [x] Register `"belief_find"` (k=30, fast path on) and variants for the study
 
 ### Tests (`test_belief_find.py`)
-- [ ] **k = 0 (no BP) ≡ weighted UF, bit-for-bit** on 2,000 shots. This proves the plumbing is right
-- [ ] Single-fault test: 100%
-- [ ] Edge-prob combine: one mechanism → `p_e == q_j`; two mechanisms → the XOR formula
-- [ ] `@slow`: LER_BF < LER_UF at d=5, p ≈ 0.005 (enough shots for a clear gap)
+- [x] **k = 0 (no BP) ≡ weighted UF, bit-for-bit** on 2,000 shots. This proves the plumbing is right
+- [x] Single-fault test: 100%
+- [x] Edge-prob combine: one mechanism → `p_e == q_j`; two mechanisms → the XOR formula
+- [x] `@slow`: LER_BF < LER_UF at d=5, p ≈ 0.005 (enough shots for a clear gap)
 
 ### Iteration-budget study (our novelty)
-- [ ] `scripts/run_budget_study.py`: k ∈ {0, 1, 2, 4, 8, 16, 32}, d ∈ {3,5,7}, p at ~0.5× threshold and ~0.9× threshold
-- [ ] Record LER, mean and p99 latency, and fast-path fraction for every k
-- [ ] Plot A: LER vs k, normalized to UF (k=0) and with PyMatching as a dashed line
-- [ ] Plot B: p99 latency vs k, with and without the fast path
-- [ ] Plot C: fast-path fraction vs p
-- [ ] Write the one-sentence finding in PROGRESS.md (e.g. "k=4 captures X% of the k=32 gain at Y% of the latency")
+- [x] `scripts/run_budget_study.py`: k ∈ {0, 1, 2, 4, 8, 16, 32}, d ∈ {3,5,7}, p at ~0.5× threshold and ~0.9× threshold
+- [x] Record LER, mean and p99 latency, and fast-path fraction for every k
+- [x] Plot A: LER vs k, normalized to UF (k=0) and with PyMatching as a dashed line
+- [x] Plot B: p99 latency vs k, with and without the fast path
+- [x] Plot C: fast-path fraction vs p
+- [x] Write the one-sentence finding in PROGRESS.md (e.g. "k=4 captures X% of the k=32 gain at Y% of the latency")
 
 ## Acceptance criteria
 1. k=0 equivalence test passes.

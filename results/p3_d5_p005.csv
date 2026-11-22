@@ -1,0 +1,2 @@
+decoder,d,p,rounds,shots,failures,ler_shot,ler_shot_err,ler_round,t_mean_us,t_p50_us,t_p99_us,extra,seed
+belief_find,5,0.005,5,5000,59,0.0118,0.001527138500595149,0.0023712187228630555,4933.0957332,8381.396,11427.769169999998,"{""alpha"": 0.625, ""bp_iters"": 30, ""fast_path"": true, ""fast_path_fraction"": 0.3496, ""mean_bp_iterations"": 20.4416, ""shots_decoded"": 5000}",15459343435847105904
