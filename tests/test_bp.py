@@ -12,12 +12,12 @@ from qecdec.dem_graph import CheckMatrices, build_from_dem
 
 def _matrices(
     h: list[list[int]],
-    l: list[list[int]],
+    logical: list[list[int]],
     priors: list[float],
 ) -> CheckMatrices:
     """Build minimal whole-mechanism matrices for a hand-worked code."""
     h_array = np.asarray(h, dtype=np.uint8)
-    l_array = np.asarray(l, dtype=np.uint8)
+    l_array = np.asarray(logical, dtype=np.uint8)
     return CheckMatrices(
         H=csr_matrix(h_array),
         L=csr_matrix(l_array),
@@ -35,7 +35,7 @@ def _repetition_matrices() -> CheckMatrices:
             [0, 0, 1, 1, 0],
             [0, 0, 0, 1, 1],
         ],
-        l=[[0, 0, 0, 0, 1]],
+        logical=[[0, 0, 0, 0, 1]],
         priors=[0.05] * 5,
     )
 
@@ -65,7 +65,7 @@ def test_tree_repetition_code_decodes_every_single_error() -> None:
 def test_one_iteration_check_messages_match_hand_calculation() -> None:
     matrices = _matrices(
         h=[[1, 1, 1], [0, 1, 1]],
-        l=[[0, 0, 0]],
+        logical=[[0, 0, 0]],
         priors=[0.1, 0.1, 0.1],
     )
     decoder = BPDecoder(matrices, alpha=1.0)

@@ -1,0 +1,26 @@
+{
+  "decoders": ["pymatching", "uf_unweighted", "uf", "bp", "belief_find"],
+  "distances": [3, 5, 7],
+  "probabilities": [0.002, 0.0027, 0.0036, 0.005, 0.0065, 0.0087, 0.0114, 0.015],
+  "shots_by_decoder": {
+    "pymatching": 5000,
+    "uf_unweighted": 5000,
+    "uf": 5000,
+    "bp": 1000,
+    "belief_find": 1000
+  },
+  "seed": 5,
+  "workers": 4,
+  "out": "results/final.csv",
+  "decoder_options": {
+    "bp": {"alpha": 1.0},
+    "belief_find": {"alpha": 0.625, "bp_iters": 2, "fast_path": true}
+  },
+  "parallel_benchmark": {
+    "workers": [1, 2, 4],
+    "decoders": ["pymatching", "uf"],
+    "distances": [3, 5],
+    "probabilities": [0.0036, 0.005, 0.0087, 0.0114],
+    "shots": 500
+  }
+}

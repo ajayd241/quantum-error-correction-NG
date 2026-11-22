@@ -4,8 +4,8 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 import time
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -13,7 +13,6 @@ import pandas as pd
 from qecdec.circuits import make_circuit
 from qecdec.decoders.bp import BPDecoder
 from qecdec.harness import sample
-
 
 DEFAULT_ALPHAS = [0.625, 0.75, 1.0]
 

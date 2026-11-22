@@ -1,4 +1,8 @@
-"""Common decoder interface used by the benchmark harness."""
+"""Common detector-syndrome to logical-observable decoder interface.
+
+The shared contract lets the harness compare physically different decoding
+strategies without changing how noisy surface-code experiments are scored.
+"""
 
 from __future__ import annotations
 

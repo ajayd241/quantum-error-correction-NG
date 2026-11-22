@@ -10,7 +10,6 @@ from qecdec.circuits import make_circuit
 from qecdec.decoders.pymatching_ref import PyMatchingDecoder
 from qecdec.dem_graph import build_from_dem
 
-
 PHYSICAL_ERROR_RATE = 0.005
 
 

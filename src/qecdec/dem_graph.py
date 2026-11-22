@@ -10,9 +10,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
-from scipy.sparse import csr_matrix
 import stim
-
+from scipy.sparse import csr_matrix
 
 _MIN_PROBABILITY = 1e-15
 _MAX_GRAPH_PROBABILITY = 0.5 - 1e-12
