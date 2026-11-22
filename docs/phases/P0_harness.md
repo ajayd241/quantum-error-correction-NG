@@ -33,9 +33,9 @@ Build the "measuring tape": generate surface-code noise with stim, turn the dete
 - [x] CSR adjacency arrays
 
 ### Decoder interface + reference
-- [ ] `base.Decoder` ABC exactly as in IMPLEMENTATION_PLAN §4
-- [ ] `decoders/pymatching_ref.py`: `pymatching.Matching.from_detector_error_model(dem)` and `decode_batch`
-- [ ] `decoders/__init__.py` REGISTRY
+- [x] `base.Decoder` ABC exactly as in IMPLEMENTATION_PLAN §4
+- [x] `decoders/pymatching_ref.py`: `pymatching.Matching.from_detector_error_model(dem)` and `decode_batch`
+- [x] `decoders/__init__.py` REGISTRY
 
 ### Harness
 - [ ] `harness.sample()` with a seeded `compile_detector_sampler(seed=...)` and `separate_observables=True`
