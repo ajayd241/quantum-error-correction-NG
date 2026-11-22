@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qecdec"
+version = "0.1.0"
+description = "Surface-code decoder implementations and benchmarks"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "networkx>=3.0",
+    "numpy>=1.24",
+    "pymatching>=2.0",
+    "scipy>=1.10",
+    "stim>=1.13",
+]
+
+[project.optional-dependencies]
+dev = [
+    "matplotlib>=3.7",
+    "pandas>=2.0",
+    "pytest>=7.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers"
+testpaths = ["tests"]
+markers = [
+    "slow: statistical or long-running tests excluded from the fast development loop",
+]
+

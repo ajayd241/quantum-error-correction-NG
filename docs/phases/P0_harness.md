@@ -17,43 +17,43 @@ Build the "measuring tape": generate surface-code noise with stim, turn the dete
 
 ## Checklist
 ### Setup
-- [ ] `pyproject.toml` (package `qecdec`, src layout, `[dev]` extras: pytest, matplotlib, pandas)
-- [ ] `pip install -e ".[dev]"` works; `python -c "import stim, pymatching"` prints versions
-- [ ] `pytest.ini` / pyproject section registering the `slow` marker
+- [x] `pyproject.toml` (package `qecdec`, src layout, `[dev]` extras: pytest, matplotlib, pandas)
+- [x] `pip install -e ".[dev]"` works; `python -c "import stim, pymatching"` prints versions
+- [x] `pytest.ini` / pyproject section registering the `slow` marker
 
 ### Circuits
-- [ ] `circuits.make_circuit(d, p, rounds=None, basis="z")` using `surface_code:rotated_memory_z` and all four noise knobs set to `p`
-- [ ] Docstring explains each of the four noise parameters in one line
+- [x] `circuits.make_circuit(d, p, rounds=None, basis="z")` using `surface_code:rotated_memory_z` and all four noise knobs set to `p`
+- [x] Docstring explains each of the four noise parameters in one line
 
 ### DEM → graph and matrices (`dem_graph.py`)
-- [ ] Parse `dem.flattened()` error instructions; split on separators
-- [ ] Build `DecodingGraph` with boundary node `D`, merged parallel edges, and an observable mask per edge
-- [ ] Build `CheckMatrices` (`H`, `L`, `priors`, `mech_to_edges`) from the **same** decomposed DEM
-- [ ] Count and expose `num_obs_conflicts` (parallel edges whose observable masks differ)
-- [ ] CSR adjacency arrays
+- [x] Parse `dem.flattened()` error instructions; split on separators
+- [x] Build `DecodingGraph` with boundary node `D`, merged parallel edges, and an observable mask per edge
+- [x] Build `CheckMatrices` (`H`, `L`, `priors`, `mech_to_edges`) from the **same** decomposed DEM
+- [x] Count and expose `num_obs_conflicts` (parallel edges whose observable masks differ)
+- [x] CSR adjacency arrays
 
 ### Decoder interface + reference
-- [ ] `base.Decoder` ABC exactly as in IMPLEMENTATION_PLAN §4
-- [ ] `decoders/pymatching_ref.py`: `pymatching.Matching.from_detector_error_model(dem)` and `decode_batch`
-- [ ] `decoders/__init__.py` REGISTRY
+- [x] `base.Decoder` ABC exactly as in IMPLEMENTATION_PLAN §4
+- [x] `decoders/pymatching_ref.py`: `pymatching.Matching.from_detector_error_model(dem)` and `decode_batch`
+- [x] `decoders/__init__.py` REGISTRY
 
 ### Harness
-- [ ] `harness.sample()` with a seeded `compile_detector_sampler(seed=...)` and `separate_observables=True`
-- [ ] `harness.evaluate()` → `Result` (LER per shot, error bar, LER per round, latency mean/p50/p99)
-- [ ] `harness.sweep()` → CSV
-- [ ] `scripts/run_sweep.py` CLI (`--decoders --distances --ps --shots --seed --out`)
-- [ ] `scripts/plot_results.py`: log-log LER vs p with one colour per d, one line style per decoder, error bars
+- [x] `harness.sample()` with a seeded `compile_detector_sampler(seed=...)` and `separate_observables=True`
+- [x] `harness.evaluate()` → `Result` (LER per shot, error bar, LER per round, latency mean/p50/p99)
+- [x] `harness.sweep()` → CSV
+- [x] `scripts/run_sweep.py` CLI (`--decoders --distances --ps --shots --seed --out`)
+- [x] `scripts/plot_results.py`: log-log LER vs p with one colour per d, one line style per decoder, error bars
 
 ### Tests
-- [ ] `test_dem_graph.py`: D+1 nodes; all probs in (0, 0.5); every mechanism's H column matches its detector targets; `mech_to_edges` covers every edge
-- [ ] `test_harness.py`: zero syndrome → zero prediction (PyMatching); a fixed seed gives the same failures twice
-- [ ] Single-fault test for PyMatching (d = 3, 5): 100%
-- [ ] `@slow`: LER(d=5) < LER(d=3) at p = 0.002
+- [x] `test_dem_graph.py`: D+1 nodes; all probs in (0, 0.5); every mechanism's H column matches its detector targets; `mech_to_edges` covers every edge
+- [x] `test_harness.py`: zero syndrome → zero prediction (PyMatching); a fixed seed gives the same failures twice
+- [x] Single-fault test for PyMatching (d = 3, 5): 100%
+- [x] `@slow`: LER(d=5) < LER(d=3) at p = 0.002
 
 ### Results
-- [ ] Baseline sweep: d ∈ {3,5,7}, 8 p-values, ≥ 20k shots
-- [ ] Plot saved. The curves should cross somewhere around p ≈ 0.5–1% (the threshold)
-- [ ] Numbers logged in `PROGRESS.md`
+- [x] Baseline sweep: d ∈ {3,5,7}, 8 p-values, ≥ 20k shots
+- [x] Plot saved. The curves should cross somewhere around p ≈ 0.5–1% (the threshold)
+- [x] Numbers logged in `PROGRESS.md`
 
 ## Acceptance criteria
 1. `pytest -q -m "not slow"` is green.
